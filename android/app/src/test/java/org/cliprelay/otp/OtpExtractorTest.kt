@@ -101,4 +101,38 @@ class OtpExtractorTest {
     fun `empty text`() {
         assertNull(OtpExtractor.extract(""))
     }
+
+    @Test
+    fun `alphanumeric code`() {
+        assertEquals(
+            "E7CB7B",
+            OtpExtractor.extract("Your verification code is: E7CB7B. It expires in 10 minutes.")
+        )
+    }
+
+    @Test
+    fun `alphanumeric token before keyword stays intact`() {
+        assertEquals(
+            "AB1234",
+            OtpExtractor.extract("AB1234 is your verification code.")
+        )
+    }
+
+    @Test
+    fun `digits inside a larger mixed token are ignored`() {
+        assertNull(OtpExtractor.extract("Your verification code is ABCD12345Z."))
+    }
+
+    @Test
+    fun `alphanumeric does not match decimal amount`() {
+        assertNull(OtpExtractor.extract("Payment code confirmation: you paid 1234.56 EUR"))
+    }
+
+    @Test
+    fun `plain digits win over alphanumeric on tie`() {
+        assertEquals(
+            "482910",
+            OtpExtractor.extract("code 482910 or alt E3CB4B")
+        )
+    }
 }
