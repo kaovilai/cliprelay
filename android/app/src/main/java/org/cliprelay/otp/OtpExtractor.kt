@@ -26,11 +26,12 @@ object OtpExtractor {
     // Split format: "123 456" / "1234-5678" — joined into one code.
     private val SPLIT = Regex("(?<!\\d[.,])(?<!\\d)(\\d{3,4})[ \\u00A0-](\\d{3,4})(?![.,]?\\d)")
 
-    // Alphanumeric codes like "E3CB4B": 4-8 chars, must contain at least one
-    // letter and one digit so plain words and pure digit runs (PLAIN's job)
-    // never match. Ranked below digit candidates on a distance tie.
+    // Alphanumeric codes like "E3CB4B": 4-8 letters/digits, must contain at
+    // least one letter and one digit so plain words and pure digit runs
+    // (PLAIN's job) never match. Ranked below digit candidates on a distance
+    // tie.
     private val ALNUM =
-        Regex("(?<![\\p{L}\\p{Nd}])(?=[A-Za-z0-9]*[A-Za-z])(?=[A-Za-z0-9]*\\d)[A-Za-z0-9]{4,8}(?![\\p{L}\\p{Nd}])")
+        Regex("(?<![\\p{L}\\p{Nd}])(?=[\\p{L}\\p{Nd}]*\\p{L})(?=[\\p{L}\\p{Nd}]*\\p{Nd})[\\p{L}\\p{Nd}]{4,8}(?![\\p{L}\\p{Nd}])")
 
     // Match-type rank for distance ties: joined split form wins over plain
     // digits, which win over alphanumeric.

@@ -120,7 +120,7 @@ class OtpExtractorTest {
 
     @Test
     fun `digits inside a larger mixed token are ignored`() {
-        assertNull(OtpExtractor.extract("Your verification code is AB1234Ж."))
+        assertNull(OtpExtractor.extract("Your verification code is ABCD12345Z."))
     }
 
     @Test
