@@ -101,4 +101,25 @@ class OtpExtractorTest {
     fun `empty text`() {
         assertNull(OtpExtractor.extract(""))
     }
+
+    @Test
+    fun `alphanumeric code`() {
+        assertEquals(
+            "E7CB7B",
+            OtpExtractor.extract("Your verification code is: E7CB7B. It expires in 10 minutes.")
+        )
+    }
+
+    @Test
+    fun `alphanumeric does not match decimal amount`() {
+        assertNull(OtpExtractor.extract("Payment code confirmation: you paid 1234.56 EUR"))
+    }
+
+    @Test
+    fun `plain digits win over alphanumeric on tie`() {
+        assertEquals(
+            "482910",
+            OtpExtractor.extract("code 482910 or alt E3CB4B")
+        )
+    }
 }
