@@ -111,6 +111,14 @@ class OtpExtractorTest {
     }
 
     @Test
+    fun `alphanumeric token before keyword stays intact`() {
+        assertEquals(
+            "AB1234",
+            OtpExtractor.extract("AB1234 is your verification code.")
+        )
+    }
+
+    @Test
     fun `alphanumeric does not match decimal amount`() {
         assertNull(OtpExtractor.extract("Payment code confirmation: you paid 1234.56 EUR"))
     }

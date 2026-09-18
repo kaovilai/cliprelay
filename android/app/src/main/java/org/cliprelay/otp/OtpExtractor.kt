@@ -17,9 +17,10 @@ object OtpExtractor {
     private const val PROXIMITY_CHARS = 60
 
     // Standalone 4-8 digit run. Lookarounds reject digits that are part of a
-    // longer run or a decimal ("1234.56"), but allow sentence punctuation
-    // ("code is 123456.") and prefixes like Google's "G-482910".
-    private val PLAIN = Regex("(?<!\\d[.,])(?<!\\d)(\\d{4,8})(?![.,]?\\d)")
+    // longer run, a decimal ("1234.56"), or a larger alphanumeric token, but
+    // allow sentence punctuation ("code is 123456.") and prefixes like
+    // Google's "G-482910".
+    private val PLAIN = Regex("(?<!\\d[.,])(?<![A-Za-z0-9])(\\d{4,8})(?![A-Za-z])(?![.,]?\\d)")
 
     // Split format: "123 456" / "1234-5678" — joined into one code.
     private val SPLIT = Regex("(?<!\\d[.,])(?<!\\d)(\\d{3,4})[ \\u00A0-](\\d{3,4})(?![.,]?\\d)")
