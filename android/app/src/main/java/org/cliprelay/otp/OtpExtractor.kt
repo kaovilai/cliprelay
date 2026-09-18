@@ -20,7 +20,8 @@ object OtpExtractor {
     // longer run, a decimal ("1234.56"), or a larger alphanumeric token, but
     // allow sentence punctuation ("code is 123456.") and prefixes like
     // Google's "G-482910".
-    private val PLAIN = Regex("(?<!\\d[.,])(?<![A-Za-z0-9])(\\d{4,8})(?![A-Za-z])(?![.,]?\\d)")
+    private val PLAIN =
+        Regex("(?<!\\d[.,])(?<![\\p{L}\\p{Nd}])([0-9]{4,8})(?![\\p{L}\\p{Nd}])(?![.,]?\\p{Nd})")
 
     // Split format: "123 456" / "1234-5678" — joined into one code.
     private val SPLIT = Regex("(?<!\\d[.,])(?<!\\d)(\\d{3,4})[ \\u00A0-](\\d{3,4})(?![.,]?\\d)")
@@ -29,7 +30,7 @@ object OtpExtractor {
     // letter and one digit so plain words and pure digit runs (PLAIN's job)
     // never match. Ranked below digit candidates on a distance tie.
     private val ALNUM =
-        Regex("(?<![A-Za-z0-9])(?=[A-Za-z0-9]*[A-Za-z])(?=[A-Za-z0-9]*\\d)[A-Za-z0-9]{4,8}(?![A-Za-z0-9])")
+        Regex("(?<![\\p{L}\\p{Nd}])(?=[A-Za-z0-9]*[A-Za-z])(?=[A-Za-z0-9]*\\d)[A-Za-z0-9]{4,8}(?![\\p{L}\\p{Nd}])")
 
     // Match-type rank for distance ties: joined split form wins over plain
     // digits, which win over alphanumeric.

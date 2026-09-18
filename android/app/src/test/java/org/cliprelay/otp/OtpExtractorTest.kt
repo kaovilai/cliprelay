@@ -119,6 +119,11 @@ class OtpExtractorTest {
     }
 
     @Test
+    fun `digits inside a larger mixed token are ignored`() {
+        assertNull(OtpExtractor.extract("Your verification code is AB1234Ж."))
+    }
+
+    @Test
     fun `alphanumeric does not match decimal amount`() {
         assertNull(OtpExtractor.extract("Payment code confirmation: you paid 1234.56 EUR"))
     }
